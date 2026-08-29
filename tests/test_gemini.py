@@ -1,0 +1,31 @@
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
+from google import genai
+
+
+# Load the .env file
+env_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
+
+api_key = os.getenv("GEMINI_API_KEY")
+
+if not api_key:
+    print("Gemini API key was not found.")
+    raise SystemExit
+
+
+# Create Gemini client
+client = genai.Client(api_key=api_key)
+
+
+# Send a simple test request
+response = client.models.generate_content(
+    model="gemini-3.6-flash",
+    contents="Say hello in one short sentence."
+)
+
+print("Gemini connection successful!")
+print("Response:")
+print(response.text)
